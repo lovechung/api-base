@@ -12,7 +12,7 @@ service User {
   rpc ListUser (ListUserReq) returns (ListUserReply);
 
   // 获取用户详情
-  rpc GetUser (UserIdReq) returns (UserReply);
+  rpc GetUser (google.protobuf.Int64Value) returns (UserReply);
 
   // 获取用户昵称
   rpc GetUserName (google.protobuf.Int64Value) returns (google.protobuf.StringValue);
@@ -30,7 +30,7 @@ service User {
   rpc UpdateUserStatus (UpdateUserStatusReq) returns (google.protobuf.Empty);
 
   // 删除用户
-  rpc DeleteUser (UserIdReq) returns (google.protobuf.Empty);
+  rpc DeleteUser (google.protobuf.Int64Value) returns (google.protobuf.Empty);
 }
 
 message ListUserReq {
@@ -84,14 +84,6 @@ message UpdateUserStatusReq {
   int64 id = 1;
   // 状态
   string status = 2;
-}
-
-message UserIdReq {
-  int64 id = 1;
-}
-
-message UserNameReply {
-  string username = 1;
 }
 
 message UserIdsReq {

@@ -3,6 +3,7 @@ syntax = "proto3";
 package api.car.v1;
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
 
 option go_package = "api-base/api/car/v1;car";
 
@@ -11,7 +12,7 @@ service Car {
   rpc ListCar (ListCarReq) returns (ListCarReply);
 
   // 获取汽车详情
-  rpc GetCar (CarIdParam) returns (CarReply);
+  rpc GetCar (google.protobuf.Int64Value) returns (CarReply);
 
   // 保存汽车
   rpc SaveCar (SaveCarReq) returns (google.protobuf.Empty);
@@ -20,7 +21,7 @@ service Car {
   rpc TradeCar (TradeCarReq) returns (google.protobuf.Empty);
 
   // 删除汽车
-  rpc DeleteCar (CarIdParam) returns (google.protobuf.Empty);
+  rpc DeleteCar (google.protobuf.Int64Value) returns (google.protobuf.Empty);
 }
 
 message ListCarReq {
@@ -61,9 +62,4 @@ message TradeCarReq {
   int64 id = 1;
   // 用户id
   int64 user_id = 2;
-}
-
-message CarIdParam {
-  // 汽车id
-  int64 id = 1;
 }

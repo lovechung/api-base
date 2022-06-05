@@ -27,7 +27,7 @@ type UserClient interface {
 	// 分页获取用户列表
 	ListUser(ctx context.Context, in *ListUserReq, opts ...grpc.CallOption) (*ListUserReply, error)
 	// 获取用户详情
-	GetUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserReply, error)
+	GetUser(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*UserReply, error)
 	// 获取用户昵称
 	GetUserName(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*wrapperspb.StringValue, error)
 	// 获取用户昵称（批量）
@@ -39,7 +39,7 @@ type UserClient interface {
 	// 更新用户状态
 	UpdateUserStatus(ctx context.Context, in *UpdateUserStatusReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 删除用户
-	DeleteUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteUser(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userClient struct {
@@ -59,7 +59,7 @@ func (c *userClient) ListUser(ctx context.Context, in *ListUserReq, opts ...grpc
 	return out, nil
 }
 
-func (c *userClient) GetUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserReply, error) {
+func (c *userClient) GetUser(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*UserReply, error) {
 	out := new(UserReply)
 	err := c.cc.Invoke(ctx, "/api.user.v1.User/GetUser", in, out, opts...)
 	if err != nil {
@@ -113,7 +113,7 @@ func (c *userClient) UpdateUserStatus(ctx context.Context, in *UpdateUserStatusR
 	return out, nil
 }
 
-func (c *userClient) DeleteUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userClient) DeleteUser(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/api.user.v1.User/DeleteUser", in, out, opts...)
 	if err != nil {
@@ -129,7 +129,7 @@ type UserServer interface {
 	// 分页获取用户列表
 	ListUser(context.Context, *ListUserReq) (*ListUserReply, error)
 	// 获取用户详情
-	GetUser(context.Context, *UserIdReq) (*UserReply, error)
+	GetUser(context.Context, *wrapperspb.Int64Value) (*UserReply, error)
 	// 获取用户昵称
 	GetUserName(context.Context, *wrapperspb.Int64Value) (*wrapperspb.StringValue, error)
 	// 获取用户昵称（批量）
@@ -141,7 +141,7 @@ type UserServer interface {
 	// 更新用户状态
 	UpdateUserStatus(context.Context, *UpdateUserStatusReq) (*emptypb.Empty, error)
 	// 删除用户
-	DeleteUser(context.Context, *UserIdReq) (*emptypb.Empty, error)
+	DeleteUser(context.Context, *wrapperspb.Int64Value) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -152,7 +152,7 @@ type UnimplementedUserServer struct {
 func (UnimplementedUserServer) ListUser(context.Context, *ListUserReq) (*ListUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUser not implemented")
 }
-func (UnimplementedUserServer) GetUser(context.Context, *UserIdReq) (*UserReply, error) {
+func (UnimplementedUserServer) GetUser(context.Context, *wrapperspb.Int64Value) (*UserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (UnimplementedUserServer) GetUserName(context.Context, *wrapperspb.Int64Value) (*wrapperspb.StringValue, error) {
@@ -170,7 +170,7 @@ func (UnimplementedUserServer) UpdateUser(context.Context, *UpdateUserReq) (*emp
 func (UnimplementedUserServer) UpdateUserStatus(context.Context, *UpdateUserStatusReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserStatus not implemented")
 }
-func (UnimplementedUserServer) DeleteUser(context.Context, *UserIdReq) (*emptypb.Empty, error) {
+func (UnimplementedUserServer) DeleteUser(context.Context, *wrapperspb.Int64Value) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
@@ -205,7 +205,7 @@ func _User_ListUser_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdReq)
+	in := new(wrapperspb.Int64Value)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -217,7 +217,7 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/api.user.v1.User/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUser(ctx, req.(*UserIdReq))
+		return srv.(UserServer).GetUser(ctx, req.(*wrapperspb.Int64Value))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -313,7 +313,7 @@ func _User_UpdateUserStatus_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdReq)
+	in := new(wrapperspb.Int64Value)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -325,7 +325,7 @@ func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/api.user.v1.User/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).DeleteUser(ctx, req.(*UserIdReq))
+		return srv.(UserServer).DeleteUser(ctx, req.(*wrapperspb.Int64Value))
 	}
 	return interceptor(ctx, in, info, handler)
 }

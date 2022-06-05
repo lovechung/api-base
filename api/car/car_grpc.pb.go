@@ -12,6 +12,7 @@ import (
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -26,13 +27,13 @@ type CarClient interface {
 	// 分页获取汽车列表
 	ListCar(ctx context.Context, in *ListCarReq, opts ...grpc.CallOption) (*ListCarReply, error)
 	// 获取汽车详情
-	GetCar(ctx context.Context, in *CarIdParam, opts ...grpc.CallOption) (*CarReply, error)
+	GetCar(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*CarReply, error)
 	// 保存汽车
 	SaveCar(ctx context.Context, in *SaveCarReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 交易汽车
 	TradeCar(ctx context.Context, in *TradeCarReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 删除汽车
-	DeleteCar(ctx context.Context, in *CarIdParam, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteCar(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type carClient struct {
@@ -52,7 +53,7 @@ func (c *carClient) ListCar(ctx context.Context, in *ListCarReq, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *carClient) GetCar(ctx context.Context, in *CarIdParam, opts ...grpc.CallOption) (*CarReply, error) {
+func (c *carClient) GetCar(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*CarReply, error) {
 	out := new(CarReply)
 	err := c.cc.Invoke(ctx, "/api.car.v1.Car/GetCar", in, out, opts...)
 	if err != nil {
@@ -79,7 +80,7 @@ func (c *carClient) TradeCar(ctx context.Context, in *TradeCarReq, opts ...grpc.
 	return out, nil
 }
 
-func (c *carClient) DeleteCar(ctx context.Context, in *CarIdParam, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *carClient) DeleteCar(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/api.car.v1.Car/DeleteCar", in, out, opts...)
 	if err != nil {
@@ -95,13 +96,13 @@ type CarServer interface {
 	// 分页获取汽车列表
 	ListCar(context.Context, *ListCarReq) (*ListCarReply, error)
 	// 获取汽车详情
-	GetCar(context.Context, *CarIdParam) (*CarReply, error)
+	GetCar(context.Context, *wrapperspb.Int64Value) (*CarReply, error)
 	// 保存汽车
 	SaveCar(context.Context, *SaveCarReq) (*emptypb.Empty, error)
 	// 交易汽车
 	TradeCar(context.Context, *TradeCarReq) (*emptypb.Empty, error)
 	// 删除汽车
-	DeleteCar(context.Context, *CarIdParam) (*emptypb.Empty, error)
+	DeleteCar(context.Context, *wrapperspb.Int64Value) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCarServer()
 }
 
@@ -112,7 +113,7 @@ type UnimplementedCarServer struct {
 func (UnimplementedCarServer) ListCar(context.Context, *ListCarReq) (*ListCarReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCar not implemented")
 }
-func (UnimplementedCarServer) GetCar(context.Context, *CarIdParam) (*CarReply, error) {
+func (UnimplementedCarServer) GetCar(context.Context, *wrapperspb.Int64Value) (*CarReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCar not implemented")
 }
 func (UnimplementedCarServer) SaveCar(context.Context, *SaveCarReq) (*emptypb.Empty, error) {
@@ -121,7 +122,7 @@ func (UnimplementedCarServer) SaveCar(context.Context, *SaveCarReq) (*emptypb.Em
 func (UnimplementedCarServer) TradeCar(context.Context, *TradeCarReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TradeCar not implemented")
 }
-func (UnimplementedCarServer) DeleteCar(context.Context, *CarIdParam) (*emptypb.Empty, error) {
+func (UnimplementedCarServer) DeleteCar(context.Context, *wrapperspb.Int64Value) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCar not implemented")
 }
 func (UnimplementedCarServer) mustEmbedUnimplementedCarServer() {}
@@ -156,7 +157,7 @@ func _Car_ListCar_Handler(srv interface{}, ctx context.Context, dec func(interfa
 }
 
 func _Car_GetCar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CarIdParam)
+	in := new(wrapperspb.Int64Value)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -168,7 +169,7 @@ func _Car_GetCar_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		FullMethod: "/api.car.v1.Car/GetCar",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CarServer).GetCar(ctx, req.(*CarIdParam))
+		return srv.(CarServer).GetCar(ctx, req.(*wrapperspb.Int64Value))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -210,7 +211,7 @@ func _Car_TradeCar_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _Car_DeleteCar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CarIdParam)
+	in := new(wrapperspb.Int64Value)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -222,7 +223,7 @@ func _Car_DeleteCar_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: "/api.car.v1.Car/DeleteCar",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CarServer).DeleteCar(ctx, req.(*CarIdParam))
+		return srv.(CarServer).DeleteCar(ctx, req.(*wrapperspb.Int64Value))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -12,6 +12,7 @@ import (
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -28,7 +29,7 @@ type UserClient interface {
 	// 获取用户详情
 	GetUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserReply, error)
 	// 获取用户昵称
-	GetUserName(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserNameReply, error)
+	GetUserName(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*wrapperspb.StringValue, error)
 	// 获取用户昵称（批量）
 	GetUserNameMap(ctx context.Context, in *UserIdsReq, opts ...grpc.CallOption) (*UserNameMapReply, error)
 	// 保存用户
@@ -67,8 +68,8 @@ func (c *userClient) GetUser(ctx context.Context, in *UserIdReq, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *userClient) GetUserName(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserNameReply, error) {
-	out := new(UserNameReply)
+func (c *userClient) GetUserName(ctx context.Context, in *wrapperspb.Int64Value, opts ...grpc.CallOption) (*wrapperspb.StringValue, error) {
+	out := new(wrapperspb.StringValue)
 	err := c.cc.Invoke(ctx, "/api.user.v1.User/GetUserName", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -130,7 +131,7 @@ type UserServer interface {
 	// 获取用户详情
 	GetUser(context.Context, *UserIdReq) (*UserReply, error)
 	// 获取用户昵称
-	GetUserName(context.Context, *UserIdReq) (*UserNameReply, error)
+	GetUserName(context.Context, *wrapperspb.Int64Value) (*wrapperspb.StringValue, error)
 	// 获取用户昵称（批量）
 	GetUserNameMap(context.Context, *UserIdsReq) (*UserNameMapReply, error)
 	// 保存用户
@@ -154,7 +155,7 @@ func (UnimplementedUserServer) ListUser(context.Context, *ListUserReq) (*ListUse
 func (UnimplementedUserServer) GetUser(context.Context, *UserIdReq) (*UserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServer) GetUserName(context.Context, *UserIdReq) (*UserNameReply, error) {
+func (UnimplementedUserServer) GetUserName(context.Context, *wrapperspb.Int64Value) (*wrapperspb.StringValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserName not implemented")
 }
 func (UnimplementedUserServer) GetUserNameMap(context.Context, *UserIdsReq) (*UserNameMapReply, error) {
@@ -222,7 +223,7 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _User_GetUserName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdReq)
+	in := new(wrapperspb.Int64Value)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -234,7 +235,7 @@ func _User_GetUserName_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/api.user.v1.User/GetUserName",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUserName(ctx, req.(*UserIdReq))
+		return srv.(UserServer).GetUserName(ctx, req.(*wrapperspb.Int64Value))
 	}
 	return interceptor(ctx, in, info, handler)
 }

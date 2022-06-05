@@ -3,6 +3,7 @@ syntax = "proto3";
 package api.user.v1;
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
 
 option go_package = "api-base/api/user/v1;user";
 
@@ -14,7 +15,7 @@ service User {
   rpc GetUser (UserIdReq) returns (UserReply);
 
   // 获取用户昵称
-  rpc GetUserName (UserIdReq) returns (UserNameReply);
+  rpc GetUserName (google.protobuf.Int64Value) returns (google.protobuf.StringValue);
 
   // 获取用户昵称（批量）
   rpc GetUserNameMap (UserIdsReq) returns (UserNameMapReply);

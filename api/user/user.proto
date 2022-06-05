@@ -91,5 +91,5 @@ message UserIdsReq {
 }
 
 message UserNameMapReply {
-  map<int64, string> map = 1;
+  map<int64, string> nameMap = 1;
 }

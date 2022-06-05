@@ -26,7 +26,11 @@ type UserClient interface {
 	// 分页获取用户列表
 	ListUser(ctx context.Context, in *ListUserReq, opts ...grpc.CallOption) (*ListUserReply, error)
 	// 获取用户详情
-	GetUser(ctx context.Context, in *UserIdParam, opts ...grpc.CallOption) (*UserReply, error)
+	GetUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserReply, error)
+	// 获取用户昵称
+	GetUserName(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserNameReply, error)
+	// 获取用户昵称（批量）
+	GetUserNameMap(ctx context.Context, in *UserIdsReq, opts ...grpc.CallOption) (*UserNameMapReply, error)
 	// 保存用户
 	SaveUser(ctx context.Context, in *SaveUserReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 更新用户
@@ -34,7 +38,7 @@ type UserClient interface {
 	// 更新用户状态
 	UpdateUserStatus(ctx context.Context, in *UpdateUserStatusReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 删除用户
-	DeleteUser(ctx context.Context, in *UserIdParam, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userClient struct {
@@ -54,9 +58,27 @@ func (c *userClient) ListUser(ctx context.Context, in *ListUserReq, opts ...grpc
 	return out, nil
 }
 
-func (c *userClient) GetUser(ctx context.Context, in *UserIdParam, opts ...grpc.CallOption) (*UserReply, error) {
+func (c *userClient) GetUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserReply, error) {
 	out := new(UserReply)
 	err := c.cc.Invoke(ctx, "/api.user.v1.User/GetUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetUserName(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*UserNameReply, error) {
+	out := new(UserNameReply)
+	err := c.cc.Invoke(ctx, "/api.user.v1.User/GetUserName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetUserNameMap(ctx context.Context, in *UserIdsReq, opts ...grpc.CallOption) (*UserNameMapReply, error) {
+	out := new(UserNameMapReply)
+	err := c.cc.Invoke(ctx, "/api.user.v1.User/GetUserNameMap", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +112,7 @@ func (c *userClient) UpdateUserStatus(ctx context.Context, in *UpdateUserStatusR
 	return out, nil
 }
 
-func (c *userClient) DeleteUser(ctx context.Context, in *UserIdParam, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userClient) DeleteUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/api.user.v1.User/DeleteUser", in, out, opts...)
 	if err != nil {
@@ -106,7 +128,11 @@ type UserServer interface {
 	// 分页获取用户列表
 	ListUser(context.Context, *ListUserReq) (*ListUserReply, error)
 	// 获取用户详情
-	GetUser(context.Context, *UserIdParam) (*UserReply, error)
+	GetUser(context.Context, *UserIdReq) (*UserReply, error)
+	// 获取用户昵称
+	GetUserName(context.Context, *UserIdReq) (*UserNameReply, error)
+	// 获取用户昵称（批量）
+	GetUserNameMap(context.Context, *UserIdsReq) (*UserNameMapReply, error)
 	// 保存用户
 	SaveUser(context.Context, *SaveUserReq) (*emptypb.Empty, error)
 	// 更新用户
@@ -114,7 +140,7 @@ type UserServer interface {
 	// 更新用户状态
 	UpdateUserStatus(context.Context, *UpdateUserStatusReq) (*emptypb.Empty, error)
 	// 删除用户
-	DeleteUser(context.Context, *UserIdParam) (*emptypb.Empty, error)
+	DeleteUser(context.Context, *UserIdReq) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -125,8 +151,14 @@ type UnimplementedUserServer struct {
 func (UnimplementedUserServer) ListUser(context.Context, *ListUserReq) (*ListUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUser not implemented")
 }
-func (UnimplementedUserServer) GetUser(context.Context, *UserIdParam) (*UserReply, error) {
+func (UnimplementedUserServer) GetUser(context.Context, *UserIdReq) (*UserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedUserServer) GetUserName(context.Context, *UserIdReq) (*UserNameReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserName not implemented")
+}
+func (UnimplementedUserServer) GetUserNameMap(context.Context, *UserIdsReq) (*UserNameMapReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserNameMap not implemented")
 }
 func (UnimplementedUserServer) SaveUser(context.Context, *SaveUserReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveUser not implemented")
@@ -137,7 +169,7 @@ func (UnimplementedUserServer) UpdateUser(context.Context, *UpdateUserReq) (*emp
 func (UnimplementedUserServer) UpdateUserStatus(context.Context, *UpdateUserStatusReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserStatus not implemented")
 }
-func (UnimplementedUserServer) DeleteUser(context.Context, *UserIdParam) (*emptypb.Empty, error) {
+func (UnimplementedUserServer) DeleteUser(context.Context, *UserIdReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
@@ -172,7 +204,7 @@ func _User_ListUser_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdParam)
+	in := new(UserIdReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -184,7 +216,43 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/api.user.v1.User/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUser(ctx, req.(*UserIdParam))
+		return srv.(UserServer).GetUser(ctx, req.(*UserIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetUserName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUserName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.user.v1.User/GetUserName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUserName(ctx, req.(*UserIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetUserNameMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUserNameMap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.user.v1.User/GetUserNameMap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUserNameMap(ctx, req.(*UserIdsReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -244,7 +312,7 @@ func _User_UpdateUserStatus_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdParam)
+	in := new(UserIdReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -256,7 +324,7 @@ func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/api.user.v1.User/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).DeleteUser(ctx, req.(*UserIdParam))
+		return srv.(UserServer).DeleteUser(ctx, req.(*UserIdReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -275,6 +343,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _User_GetUser_Handler,
+		},
+		{
+			MethodName: "GetUserName",
+			Handler:    _User_GetUserName_Handler,
+		},
+		{
+			MethodName: "GetUserNameMap",
+			Handler:    _User_GetUserNameMap_Handler,
 		},
 		{
 			MethodName: "SaveUser",

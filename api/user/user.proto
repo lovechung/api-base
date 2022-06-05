@@ -11,7 +11,13 @@ service User {
   rpc ListUser (ListUserReq) returns (ListUserReply);
 
   // 获取用户详情
-  rpc GetUser (UserIdParam) returns (UserReply);
+  rpc GetUser (UserIdReq) returns (UserReply);
+
+  // 获取用户昵称
+  rpc GetUserName (UserIdReq) returns (UserNameReply);
+
+  // 获取用户昵称（批量）
+  rpc GetUserNameMap (UserIdsReq) returns (UserNameMapReply);
 
   // 保存用户
   rpc SaveUser (SaveUserReq) returns (google.protobuf.Empty);
@@ -23,7 +29,7 @@ service User {
   rpc UpdateUserStatus (UpdateUserStatusReq) returns (google.protobuf.Empty);
 
   // 删除用户
-  rpc DeleteUser (UserIdParam) returns (google.protobuf.Empty);
+  rpc DeleteUser (UserIdReq) returns (google.protobuf.Empty);
 }
 
 message ListUserReq {
@@ -79,7 +85,18 @@ message UpdateUserStatusReq {
   string status = 2;
 }
 
-message UserIdParam {
-  // 用户id
+message UserIdReq {
   int64 id = 1;
+}
+
+message UserNameReply {
+  string username = 1;
+}
+
+message UserIdsReq {
+  repeated int64 id = 1;
+}
+
+message UserNameMapReply {
+  map<int64, string> map = 1;
 }

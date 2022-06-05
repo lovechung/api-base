@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package api.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "api-base/api/car/v1;car";
+
+service Car {
+  // 分页获取汽车列表
+  rpc ListCar (ListCarReq) returns (ListCarReply);
+
+  // 获取汽车详情
+  rpc GetCar (CarIdParam) returns (CarReply);
+
+  // 保存汽车
+  rpc SaveCar (SaveCarReq) returns (google.protobuf.Empty);
+
+  // 交易汽车
+  rpc TradeCar (TradeCarReq) returns (google.protobuf.Empty);
+
+  // 删除汽车
+  rpc DeleteCar (CarIdParam) returns (google.protobuf.Empty);
+}
+
+message ListCarReq {
+  // 页码
+  optional int32 page = 1;
+  // 每页大小
+  optional int32 page_size = 2;
+  // 用户昵称
+  optional string username = 3;
+  // 汽车型号
+  optional string model = 4;
+}
+
+message ListCarReply {
+  // 总条数
+  int32 total = 1;
+  repeated CarReply list = 2;
+}
+
+message CarReply {
+  // 汽车id
+  int64 id = 1;
+  // 用户昵称
+  string username = 2;
+  // 汽车型号
+  string model = 3;
+  // 汽车登记时间
+  string registered_at = 4;
+}
+
+message SaveCarReq {
+  // 用户id
+  int64 user_id = 1;
+  // 汽车型号
+  string model = 2;
+}
+
+message TradeCarReq {
+  // 汽车id
+  int64 id = 1;
+  // 用户id
+  int64 user_id = 2;
+}
+
+message CarIdParam {
+  // 汽车id
+  int64 id = 1;
+}

@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package api.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "api-base/api/user/v1;user";
+
+service User {
+  // 分页获取用户列表
+  rpc ListUser (ListUserReq) returns (ListUserReply);
+
+  // 获取用户详情
+  rpc GetUser (UserIdParam) returns (UserReply);
+
+  // 保存用户
+  rpc SaveUser (SaveUserReq) returns (google.protobuf.Empty);
+
+  // 更新用户
+  rpc UpdateUser (UpdateUserReq) returns (google.protobuf.Empty);
+
+  // 更新用户状态
+  rpc UpdateUserStatus (UpdateUserStatusReq) returns (google.protobuf.Empty);
+
+  // 删除用户
+  rpc DeleteUser (UserIdParam) returns (google.protobuf.Empty);
+}
+
+message ListUserReq {
+  // 页码
+  optional int32 page = 1;
+  // 每页大小
+  optional int32 page_size = 2;
+  // 用户昵称
+  optional string username = 3;
+}
+
+message ListUserReply {
+  // 总条数
+  int32 total = 1;
+  repeated UserReply list = 2;
+}
+
+message UserReply {
+  // 用户id
+  int64 id = 1;
+  // 用户昵称
+  string username = 2;
+  // 密码
+  string password = 3;
+  // 创建时间
+  string created_at = 4;
+}
+
+message SaveUserReq {
+  // 用户昵称
+  string username = 1;
+  // 密码
+  string password = 2;
+  // 状态
+  optional string status = 3;
+}
+
+message UpdateUserReq {
+  // 用户id
+  int64 id = 1;
+  // 用户昵称
+  string username = 2;
+  // 密码
+  string password = 3;
+  // 状态
+  optional string status = 4;
+}
+
+message UpdateUserStatusReq {
+  // 用户id
+  int64 id = 1;
+  // 状态
+  string status = 2;
+}
+
+message UserIdParam {
+  // 用户id
+  int64 id = 1;
+}

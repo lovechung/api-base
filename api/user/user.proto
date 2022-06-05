@@ -65,9 +65,9 @@ message UpdateUserReq {
   // 用户id
   int64 id = 1;
   // 用户昵称
-  string username = 2;
+  optional string username = 2;
   // 密码
-  string password = 3;
+  optional string password = 3;
   // 状态
   optional string status = 4;
 }

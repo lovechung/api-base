@@ -45,7 +45,7 @@ func NewCarClient(cc grpc.ClientConnInterface) CarClient {
 
 func (c *carClient) ListCar(ctx context.Context, in *ListCarReq, opts ...grpc.CallOption) (*ListCarReply, error) {
 	out := new(ListCarReply)
-	err := c.cc.Invoke(ctx, "/api.v1.Car/ListCar", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.car.v1.Car/ListCar", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (c *carClient) ListCar(ctx context.Context, in *ListCarReq, opts ...grpc.Ca
 
 func (c *carClient) GetCar(ctx context.Context, in *CarIdParam, opts ...grpc.CallOption) (*CarReply, error) {
 	out := new(CarReply)
-	err := c.cc.Invoke(ctx, "/api.v1.Car/GetCar", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.car.v1.Car/GetCar", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (c *carClient) GetCar(ctx context.Context, in *CarIdParam, opts ...grpc.Cal
 
 func (c *carClient) SaveCar(ctx context.Context, in *SaveCarReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/api.v1.Car/SaveCar", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.car.v1.Car/SaveCar", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (c *carClient) SaveCar(ctx context.Context, in *SaveCarReq, opts ...grpc.Ca
 
 func (c *carClient) TradeCar(ctx context.Context, in *TradeCarReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/api.v1.Car/TradeCar", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.car.v1.Car/TradeCar", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (c *carClient) TradeCar(ctx context.Context, in *TradeCarReq, opts ...grpc.
 
 func (c *carClient) DeleteCar(ctx context.Context, in *CarIdParam, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/api.v1.Car/DeleteCar", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.car.v1.Car/DeleteCar", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func _Car_ListCar_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.Car/ListCar",
+		FullMethod: "/api.car.v1.Car/ListCar",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CarServer).ListCar(ctx, req.(*ListCarReq))
@@ -165,7 +165,7 @@ func _Car_GetCar_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.Car/GetCar",
+		FullMethod: "/api.car.v1.Car/GetCar",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CarServer).GetCar(ctx, req.(*CarIdParam))
@@ -183,7 +183,7 @@ func _Car_SaveCar_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.Car/SaveCar",
+		FullMethod: "/api.car.v1.Car/SaveCar",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CarServer).SaveCar(ctx, req.(*SaveCarReq))
@@ -201,7 +201,7 @@ func _Car_TradeCar_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.Car/TradeCar",
+		FullMethod: "/api.car.v1.Car/TradeCar",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CarServer).TradeCar(ctx, req.(*TradeCarReq))
@@ -219,7 +219,7 @@ func _Car_DeleteCar_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.v1.Car/DeleteCar",
+		FullMethod: "/api.car.v1.Car/DeleteCar",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CarServer).DeleteCar(ctx, req.(*CarIdParam))
@@ -231,7 +231,7 @@ func _Car_DeleteCar_Handler(srv interface{}, ctx context.Context, dec func(inter
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Car_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.v1.Car",
+	ServiceName: "api.car.v1.Car",
 	HandlerType: (*CarServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -7,6 +7,9 @@ import "google/protobuf/wrappers.proto";
 
 option go_package = "api-base/api/user/v1;user";
 
+/**
+ * 用户
+ */
 service User {
   // 分页获取用户列表
   rpc ListUser (ListUserReq) returns (ListUserReply);
@@ -91,5 +94,5 @@ message UserIdsReq {
 }
 
 message UserNameMapReply {
-  map<int64, string> nameMap = 1;
+  map<int64, string> name_map = 1;
 }
